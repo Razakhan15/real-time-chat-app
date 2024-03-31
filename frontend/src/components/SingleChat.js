@@ -3,9 +3,15 @@ import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Box, Text } from "@chakra-ui/layout";
 import "./style.css";
-import { IconButton, Spinner, useStatStyles, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  IconButton,
+  Spinner,
+  useStatStyles,
+  useToast,
+} from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import ProfileModal from "./miscellaneous/ProfileModal";
 import { ChatState } from "../Context/ChatProvider";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
@@ -96,7 +102,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const sendMessage = async (e) => {
-    if (e.key === "Enter" && newMessage) {
+    e.preventDefault();
+    console.log("hello");
+    if (newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -209,33 +217,49 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat messages={messages} />
               </div>
             )}
-
-            <FormControl
-              onKeyDown={sendMessage}
-              idisplay="first-name"
-              isRequired
-              mt={3}
-            >
-              {isTyping ? (
-                <div>
-                  <Lottie
-                    options={defaultOptions}
-                    // height={50}
-                    width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
+            <form onSubmit={sendMessage}>
+              <FormControl
+                // onKeyDown={}
+                // onSubmit={sendMessage}
+                idisplay="first-name"
+                isRequired
+                alignItems={"center"}
+                mt={3}
+              >
+                {isTyping ? (
+                  <div>
+                    <Lottie
+                      options={defaultOptions}
+                      // height={50}
+                      width={70}
+                      style={{ marginBottom: 15, marginLeft: 0 }}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+                <Box display={"flex"}>
+                  <Input
+                    variant="filled"
+                    bg="#E0E0E0"
+                    placeholder="Enter a message.."
+                    value={newMessage}
+                    onChange={typingHandler}
+                    roundedLeft={"5px"}
+                    rounded={"unset"}
                   />
-                </div>
-              ) : (
-                <></>
-              )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
-            </FormControl>
+                  <Button type="submit" p={"0px"}>
+                    <ArrowForwardIcon
+                      textColor={"#E0E0E0"}
+                      bg={"#38B2AC"}
+                      height={"100%"}
+                      width={"2.5rem"}
+                      roundedRight={"5px"}
+                    />
+                  </Button>
+                </Box>
+              </FormControl>
+            </form>
           </Box>
         </>
       ) : (

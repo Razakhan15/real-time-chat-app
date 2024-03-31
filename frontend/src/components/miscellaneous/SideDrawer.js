@@ -129,7 +129,7 @@ const SideDrawer = () => {
         alignItems="center"
         bg="white"
         w="100%"
-        p="5px 10px 5px 10px"
+        p="5px"
         borderWidth="5px"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
@@ -140,9 +140,6 @@ const SideDrawer = () => {
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
-        </Text>
         <div>
           <Menu>
             <MenuButton p={1}>
